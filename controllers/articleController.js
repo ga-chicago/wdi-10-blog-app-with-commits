@@ -44,8 +44,14 @@ router.post('/', (req, res)=>{
 
 router.get('/:id/edit', (req, res)=>{
   Article.findById(req.params.id, (err, foundArticle)=>{
-    res.render('articles/edit.ejs', {
-      article: foundArticle
+    Author.find({}, (err, allAuthors)=>{
+      Author.findOne({'articles._id':req.params.id}, (err, foundArticleAuthor)=>{
+        res.render('articles/edit.ejs', {
+          article: foundArticle,
+          authors: allAuthors,
+          articleAuthor: foundArticleAuthor
+        });
+      });
     });
   });
 });
@@ -62,15 +68,27 @@ router.delete('/:id', (req, res)=>{
 });
 
 router.put('/:id', (req, res)=>{
-    Article.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, updatedArticle)=>{
-        Author.findOne({ 'articles._id' : req.params.id }, (err, foundAuthor)=>{
-            foundAuthor.articles.id(req.params.id).remove();
-            foundAuthor.articles.push(updatedArticle);
-            foundAuthor.save((err, data)=>{
-                res.redirect('/articles/'+req.params.id);
+  Article.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, updatedArticle)=>{
+    Author.findOne({ 'articles._id' : req.params.id }, (err, foundAuthor)=>{
+      if(foundAuthor._id.toString() !== req.body.authorId){
+        foundAuthor.articles.id(req.params.id).remove();
+        foundAuthor.save((err, savedFoundAuthor)=>{
+          Author.findById(req.body.authorId, (err, newAuthor)=>{
+            newAuthor.articles.push(updatedArticle);
+            newAuthor.save((err, savedNewAuthor)=>{
+              res.redirect('/articles/'+req.params.id);
             });
+          });
         });
+      } else {
+        foundAuthor.articles.id(req.params.id).remove();
+        foundAuthor.articles.push(updatedArticle);
+        foundAuthor.save((err, data)=>{
+          res.redirect('/articles/'+req.params.id);
+        });
+      }
     });
+  });
 });
 
 module.exports = router;
