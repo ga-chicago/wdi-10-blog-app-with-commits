@@ -29,4 +29,10 @@ router.post('/', (req, res)=>{
   });
 });
 
+router.delete('/:id', (req, res)=>{
+  Article.findByIdAndRemove(req.params.id, ()=>{
+    res.redirect('/articles');
+  });
+});
+
 module.exports = router;
