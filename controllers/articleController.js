@@ -15,6 +15,14 @@ router.get('/new', (req, res)=>{
   res.render('articles/new.ejs');
 });
 
+router.get('/:id', (req, res)=>{
+  Article.findById(req.params.id, (err, foundArticle)=>{
+    res.render('articles/show.ejs', {
+      article: foundArticle
+    });
+  });
+});
+
 router.post('/', (req, res)=>{
   Article.create(req.body, (err, createdArticle)=>{
     res.redirect('/articles');
