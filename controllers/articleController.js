@@ -29,6 +29,14 @@ router.post('/', (req, res)=>{
   });
 });
 
+router.get('/:id/edit', (req, res)=>{
+  Article.findById(req.params.id, (err, foundArticle)=>{
+    res.render('articles/edit.ejs', {
+      article: foundArticle
+    });
+  });
+});
+
 router.delete('/:id', (req, res)=>{
   Article.findByIdAndRemove(req.params.id, ()=>{
     res.redirect('/articles');
