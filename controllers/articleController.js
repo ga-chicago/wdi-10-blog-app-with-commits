@@ -29,9 +29,14 @@ router.get('/:id', (req, res)=>{
 });
 
 router.post('/', (req, res)=>{
-  Article.create(req.body, (err, createdArticle)=>{
-    res.redirect('/articles');
-  });
+    Author.findById(req.body.authorId, (err, foundAuthor)=>{
+        Article.create(req.body, (err, createdArticle)=>{ //req.body.authorId is ignored due to Schema
+            foundAuthor.articles.push(createdArticle);
+            foundAuthor.save((err, data)=>{
+                res.redirect('/articles');
+            });
+        });
+    });
 });
 
 router.get('/:id/edit', (req, res)=>{
