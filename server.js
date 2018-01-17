@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
 
-app.get('/', (req, res)=>{
+const authorController = require('./controllers/authorController.js');
+app.use('/authors', authorController);
+
+app.get('/', (req, res) => {
   res.render('index.ejs');
 });
 
