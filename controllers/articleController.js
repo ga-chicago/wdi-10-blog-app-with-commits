@@ -43,4 +43,10 @@ router.delete('/:id', (req, res)=>{
   });
 });
 
+router.put('/:id', (req, res)=>{
+  Article.findByIdAndUpdate(req.params.id, req.body, ()=>{
+    res.redirect('/articles');
+  });
+});
+
 module.exports = router;
