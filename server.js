@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 
 require('./db/db.js')
+
+app.use(bodyParser.urlencoded({extended:false}));
 
 const authorController = require('./controllers/authorController.js');
 app.use('/authors', authorController);
