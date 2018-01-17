@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Article = require('../models/article.js');
+const Author = require('../models/author.js')
 
 router.get('/', (req, res)=>{
   Article.find({}, (err, foundArticles)=>{
@@ -12,7 +13,11 @@ router.get('/', (req, res)=>{
 });
 
 router.get('/new', (req, res)=>{
-  res.render('articles/new.ejs');
+    Author.find({}, (err, allAuthors)=>{
+        res.render('articles/new.ejs', {
+            authors: allAuthors
+        });
+    });
 });
 
 router.get('/:id', (req, res)=>{
