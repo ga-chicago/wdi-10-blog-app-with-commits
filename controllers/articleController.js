@@ -21,11 +21,14 @@ router.get('/new', (req, res)=>{
 });
 
 router.get('/:id', (req, res)=>{
-  Article.findById(req.params.id, (err, foundArticle)=>{
-    res.render('articles/show.ejs', {
-      article: foundArticle
+    Article.findById(req.params.id, (err, foundArticle)=>{
+        Author.findOne({'articles._id':req.params.id}, (err, foundAuthor)=>{
+            res.render('articles/show.ejs', {
+                author:foundAuthor,
+                article: foundArticle
+            });
+        })
     });
-  });
 });
 
 router.post('/', (req, res)=>{
