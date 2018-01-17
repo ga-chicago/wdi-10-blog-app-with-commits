@@ -4,7 +4,11 @@ const router = express.Router();
 const Article = require('../models/article.js');
 
 router.get('/', (req, res)=>{
-	res.render('articles/index.ejs');
+  Article.find({}, (err, foundArticles)=>{
+    res.render('articles/index.ejs', {
+      articles: foundArticles
+    });
+  })
 });
 
 router.get('/new', (req, res)=>{
