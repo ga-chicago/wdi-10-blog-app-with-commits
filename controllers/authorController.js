@@ -5,7 +5,11 @@ const Author = require('../models/author.js');
 
 
 router.get('/', (req, res)=>{
-  res.render('authors/index.ejs');
+  Author.find({}, (err, foundAuthors)=>{
+    res.render('authors/index.ejs', {
+      authors: foundAuthors
+    });
+  })
 });
 
 router.get('/new', (req, res)=>{
