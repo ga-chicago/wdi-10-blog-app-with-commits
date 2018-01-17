@@ -16,6 +16,15 @@ router.get('/new', (req, res)=>{
   res.render('authors/new.ejs');
 });
 
+//avoid this handling /new by placing it below the /new .get route
+router.get('/:id', (req, res)=>{
+  Author.findById(req.params.id, (err, foundAuthor)=>{
+    res.render('authors/show.ejs', {
+      author: foundAuthor
+    });
+  });
+});
+
 router.post('/', (req, res)=>{
   Author.create(req.body, (err, createdAuthor)=>{
     res.redirect('/authors');
