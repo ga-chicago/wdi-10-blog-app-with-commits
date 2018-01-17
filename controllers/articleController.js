@@ -51,9 +51,14 @@ router.get('/:id/edit', (req, res)=>{
 });
 
 router.delete('/:id', (req, res)=>{
-  Article.findByIdAndRemove(req.params.id, ()=>{
-    res.redirect('/articles');
-  });
+    Article.findByIdAndRemove(req.params.id, (err, foundArticle)=>{
+        Author.findOne({'articles._id':req.params.id}, (err, foundAuthor)=>{
+            foundAuthor.articles.id(req.params.id).remove();
+            foundAuthor.save((err, data)=>{
+                res.redirect('/articles');
+            });
+        });
+    });
 });
 
 router.put('/:id', (req, res)=>{
