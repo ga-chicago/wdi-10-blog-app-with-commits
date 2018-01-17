@@ -45,4 +45,10 @@ router.delete('/:id', (req, res)=>{
   });
 });
 
+router.put('/:id', (req, res)=>{
+  Author.findByIdAndUpdate(req.params.id, req.body, ()=>{
+    res.redirect('/authors');
+  });
+});
+
 module.exports = router;
