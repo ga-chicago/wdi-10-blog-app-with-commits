@@ -10,6 +10,8 @@ app.use(methodOverride('_method'));
 
 const authorController = require('./controllers/authorController.js');
 app.use('/authors', authorController);
+const articleController = require('./controllers/articleController.js');
+app.use('/articles', articleController);
 
 app.get('/', (req, res) => {
   res.render('index.ejs');
