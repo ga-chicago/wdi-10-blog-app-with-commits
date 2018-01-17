@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+require('./db/db.js')
+
 const authorController = require('./controllers/authorController.js');
 app.use('/authors', authorController);
 
